@@ -112,7 +112,7 @@ public class Graph extends List {
 					src.Vert[check[0]].moveNext();
 					
 					if(src.color[check[2]] < 1){ // Skips if BFS has already checked. Otherwise assign neighbors.
-						if(src.color[check[2]] < 0) L.prepend(check[2]);
+						if(src.color[check[2]] < 0) L.prepend(check[2]); //Skips duplicates in list if they've been processed or not.
 						if(src.color[check[2]] < 0)src.color[check[2]] = 0;
 						if(src.dist[check[2]] < 0) src.dist[check[2]] = disto;
 						if(src.parent[check[2]] < 0) src.parent[check[2]] = check[0]; 
