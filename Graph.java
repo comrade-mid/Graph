@@ -39,13 +39,29 @@ public class Graph extends List {
 	int getSize(Graph G) {return edges;}
 	int getOrder(Graph G) {return order;}
 	int getSource(Graph G) {return last_src;}
-	/*
-	int getDist(Graph G, int u){
-		if(u > order || u < 1) return -1;
-		if(last_src == -1) return -1;
+	
+	int getParent(int u){
+		
+		if(u < 1 || u > order){
+			System.out.println("Unit is not within graph. Please choose a correct node."); 
+			return -1;
+		} else {
+			return src.parent[u];
+		}
+	}		// Pre: 1<=u<=n=getOrder(G) 
+	
+	
+	int getDist(int u){
+		
+		if(u < 1 || u > order) {
+			System.out.println("Unit is not within graph. Please choose a correct node.");
+			return -1;
+		} else {
+			return src.dist[u];
+		}
 	}// Pre: 1<=u<=n=getOrder(G)
 
-		
+	/*	
 	int getFinish(Graph G, int u); // Pre: 1<=u<=n=getOrder(G)
 	*/
 	
@@ -60,44 +76,55 @@ public class Graph extends List {
 		}
 	}//Pre: 1<=u<=n, 1<=v<=n 
 	
+	
+	
+	
+	
 	void BFS(int s){
-		int check1, check2, check3;
+		int[] check = new int[3]; 
 		int disto = 0;
-		if(s > order || s < 1) System.out.println("\n Unit can't be greater or less than the order...");
-		
-		check1 = s;
-		last_src = s;
-		check3 = 0;
+		List L = new List();
+		int n;
 		
 		
-		while(check3 <= order){
-			// Prior to loop(s) assign source vertex information.
-			src.color[check1] = 1;
-			if(check1 == s) src.parent[check1] = -1;
-			else src.parent[check1] = 1;
-			src.dist = disto++;
+		
+		if(s > order || s < 1){
+			System.out.println("\n Unit can't be greater or less than the order...");
+		} else {
 			
-			// 
-			while(src.Vert[check]){
-				check2 = src.Vert[check1].get();
-				src.color[check2] = 0;
-				src.parent[check2] = check1;
-				src.dist = disto;
-				src.Vert[check1] = src.Vert[check1].moveNext();
+			L.prepend(s);
+			src.dist[s] = disto++;
+			src.parent[s] = -1;
+			src.color[s] = 1;
+			
+			
+			while(L.length() != 0){
+				check[0] = L.get(); //redundant operation for loop to succeed.
+				System.out.println("Current node being checked..." + check[0]);
+				L.deleteBack(); //L is empty at start.
+				L.moveBack();
+				src.Vert[check[0]].moveFront();
+				
+				for(check[1]=1;check[1] <= src.Vert[check[0]].length();check[1]++){
+					
+					check[2] = src.Vert[check[0]].get();
+					
+					src.Vert[check[0]].moveNext();
+					
+					if(src.color[check[2]] < 1){ // Skips if BFS has already checked. Otherwise assign neighbors.
+						if(src.color[check[2]] < 0) L.prepend(check[2]);
+						if(src.color[check[2]] < 0)src.color[check[2]] = 0;
+						if(src.dist[check[2]] < 0) src.dist[check[2]] = disto;
+						if(src.parent[check[2]] < 0) src.parent[check[2]] = check[0]; 
+					}
+				}
+				disto++;
 			}
-			
-			check3++;
-			disto++;
 		}
 	}
 	
 	
 /*
-	int getParent(Graph G, int u){
-		if(u < 1 && G.getOrder() < 1) return -1;
-		
-		
-	}		// Pre: 1<=u<=n=getOrder(G) 
 	
 */
 
