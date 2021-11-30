@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Graph extends List {
 	private class GraphObj{
 		List[] Vert;
@@ -67,6 +69,7 @@ public class Graph extends List {
 		int n = order;
 		if(u > 0 && u <= n && v > 0 && v <= n){
 			src.Vert[v].prepend(u);
+			src.Vert[u].prepend(v);
 		}
 	}//Pre: 1<=u<=n, 1<=v<=n 
 	
@@ -90,6 +93,11 @@ public class Graph extends List {
 		if(s > order || s < 1){
 			System.out.println("\n Input can't be greater or less than the order...");
 		} else {
+			for(int i=0;i<order;i++){
+				src.dist[i+1] = -1;
+				src.parent[i+1] = -1;
+				src.color[i+1] = -1;
+			}
 			
 			L.prepend(s);
 			src.dist[s] = 0;
@@ -121,6 +129,7 @@ public class Graph extends List {
 					}
 				}
 			}
+			//
 		}
 	}
 	
