@@ -6,7 +6,7 @@ public class PathGen{
 	public static void main(String[] args) throws IOException {
 		
 		Scanner in = null;//in, line, token arrays used for file content.
-		PrintWriter out1 = new PrintWriter(new File(args[1]+".txt"));
+		PrintWriter out1 = new PrintWriter(new File(args[1]+".txt")); //Destination file for processed data..
 		String line = null;
 		String[] conFile = new String[100]; //Content of file
 		String[] token = null;
@@ -38,10 +38,12 @@ public class PathGen{
 	
 		in.close();//Closes file.
 		
+		//Given format that first line is the order of the Graph.
 		Graph G = new Graph(Integer.valueOf(conFile[0]));
 		
-		
-		for(i=1;i<lineNumber;i=i+2){
+		// Loop to add non-directed edges to the graph. 
+		//Leaves after.
+		for(i=1;i<lineNumber;i+=2){
 			if(Integer.valueOf(conFile[i]) != 0){
 				G.addEdge(Integer.valueOf(conFile[i]),Integer.valueOf(conFile[i+1]));
 			} else {
@@ -49,15 +51,13 @@ public class PathGen{
 			}
 		}
 		
-		
-		
-		
+		//These help to generate and output data as necessary for each successive BFS order needed.
 		List H = new List();
 		String help2 = "";
 		out1.println(G);
 		
 		
-		
+		//For-loop to loop for each shortest path + formatting for output file. Plus linear deletion methods.
 		for(i+=2;i<lineNumber;i=i+2){
 			if(Integer.valueOf(conFile[i]) != 0){
 				G.BFS(Integer.valueOf(conFile[i]));
@@ -70,7 +70,10 @@ public class PathGen{
 				
 				out1.print(help2);
 				out1.print(" "+H);
-				H.clear();
+				while(H.length() > 0){
+					H.moveFront();
+					H.deleteFront();
+				}
 				help2 = "\n \n";
 			} else {
 				break;
