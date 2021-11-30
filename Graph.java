@@ -130,21 +130,22 @@ public class Graph extends List {
 		}
 	}
 	
-/*
+
 	public String toString(){
     	StringBuffer sb = new StringBuffer();
     	GraphObj N = src;
 		int L=0;
 		int M=0;
-        for(M=0;M<order;M++){
-			sb.append(M+":");
+        for(M=1;M<=order;M++){
+			sb.append(M+": ");
 			N.Vert[M].moveFront();
-			for(L=0;L<N.Vert[L].length();L++){
-				sb.append(" ").append(N.Vert[L].get()+" ");
-				N.Vert[L].moveNext();
+			for(L=0;L<N.Vert[M].length();L++){
+				sb.append(N.Vert[M].get()+" ");
+				N.Vert[M].moveNext();
 			}
+			sb.append("\n");
 		}
     	return new String(sb);
     }
-*/
+
 }
