@@ -69,65 +69,67 @@ public class Graph extends List {
 	// Manipulation procedures //
 	
 	
-	void addEdge(int u, int v){//Undirected Graph
+	void addEdge(int v, int u){//Undirected Graph
 		int n = order;
-		if(u > 0 && u <= n && v > 1 && v <= n){
+		if(u > 0 && u <= n && v > 0 && v <= n){
 			src.Vert[v].prepend(u);
 		}
 	}//Pre: 1<=u<=n, 1<=v<=n 
 	
 	
 	
-	
+	void clear(){
+		for(int i=0;i<=order;i++){
+			src.Vert[i].clear();
+			src.color[i] = -1;
+			src.dist[i] = -1;
+			src.parent[i] = -1;
+		}
+		
+	}
 	
 	void BFS(int s){
+		
 		int[] check = new int[3]; 
-		int disto = 0;
 		List L = new List();
-		int n;
-		
-		
-		
+		last_src = s;
 		if(s > order || s < 1){
-			System.out.println("\n Unit can't be greater or less than the order...");
+			System.out.println("\n Input can't be greater or less than the order...");
 		} else {
 			
 			L.prepend(s);
-			src.dist[s] = disto++;
+			src.dist[s] = 0;
 			src.parent[s] = -1;
 			src.color[s] = 1;
 			
 			
-			while(L.length() != 0){
-				check[0] = L.get(); //redundant operation for loop to succeed.
-				System.out.println("Current node being checked..." + check[0]);
-				L.deleteBack(); //L is empty at start.
-				L.moveBack();
+			
+			while(L.length() !=0){
+				check[0] = L.get();
+				L.deleteFront();
+				L.moveFront();
+				src.color[check[0]] = 1;
 				src.Vert[check[0]].moveFront();
-				
-				for(check[1]=1;check[1] <= src.Vert[check[0]].length();check[1]++){
+				for(check[1]=0;check[1] < src.Vert[check[0]].length() ;check[1]++){
 					
 					check[2] = src.Vert[check[0]].get();
-					
 					src.Vert[check[0]].moveNext();
 					
-					if(src.color[check[2]] < 1){ // Skips if BFS has already checked. Otherwise assign neighbors.
-						if(src.color[check[2]] < 0) L.prepend(check[2]); //Skips duplicates in list if they've been processed or not.
-						if(src.color[check[2]] < 0)src.color[check[2]] = 0;
-						if(src.dist[check[2]] < 0) src.dist[check[2]] = disto;
-						if(src.parent[check[2]] < 0) src.parent[check[2]] = check[0]; 
+					if(src.color[check[2]] < 0){
+						if(src.parent[check[2]] < 0) src.parent[check[2]] = check[0];
+						src.color[check[2]] = 0;
+						
+						if(src.dist[check[2]] < 0){
+							if(src.parent[check[2]] == s) src.dist[check[2]] = 1;
+							else src.dist[check[2]] = src.dist[src.parent[check[2]]] + 1;
+						}
+						if(src.color[check[2]] != 1) L.append(check[2]);
 					}
 				}
-				disto++;
 			}
 		}
 	}
 	
-	
-/*
-	
-*/
-
 /*
 	public String toString(){
     	StringBuffer sb = new StringBuffer();
@@ -135,14 +137,14 @@ public class Graph extends List {
 		int L=0;
 		int M=0;
         for(M=0;M<order;M++){
-			N.neighbors[L].moveFront();
-			for(L=0;L<order;L++){
-				sb.append(N.neighbors[L].get()+" ").append("\n");
-				N.neighbors[L].moveNext();
+			sb.append(M+":");
+			N.Vert[M].moveFront();
+			for(L=0;L<N.Vert[L].length();L++){
+				sb.append(" ").append(N.Vert[L].get()+" ");
+				N.Vert[L].moveNext();
 			}
 		}
     	return new String(sb);
     }
 */
-
 }
