@@ -17,8 +17,6 @@ public class Graph extends List {
 				dist[i] = -1;
 				color[i] = -1;
 			}
-			
-			
 		}
 	}
 	
@@ -61,10 +59,6 @@ public class Graph extends List {
 		}
 	}// Pre: 1<=u<=n=getOrder(G)
 
-	/*	
-	int getFinish(Graph G, int u); // Pre: 1<=u<=n=getOrder(G)
-	*/
-	
 	
 	// Manipulation procedures //
 	
@@ -125,6 +119,26 @@ public class Graph extends List {
 						}
 						if(src.color[check[2]] != 1) L.append(check[2]);
 					}
+				}
+			}
+		}
+	}
+	
+	void getPath(List L, int u) {
+		if(last_src < 1) {
+			System.out.println("Please run BFS() prior to finding a path.");
+		} else if(u < 1 || u > order){
+			System.out.println("Please use a vertex within the order.");
+		} else {
+			if(src.dist[u] >= 0){
+				int[] n = new int[2];
+				n[0] = src.parent[u];
+				n[1] = 0;
+				L.prepend(u);
+				while(n[0] != -1){
+					L.prepend(n[0]);
+					n[1] = src.parent[n[0]];
+					n[0] = n[1];
 				}
 			}
 		}
